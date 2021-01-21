@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+    <!-- Ignore this -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    
+    <!-- Import CSS -->
+    <link rel="stylesheet" href="/style.css">
+    
+    <!-- Import Javascript & JQuery -->
+    <script src="/script.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDD3o_vzkcWmw4-yDtuFZ0F4lioqWn8eU8"></script>
+
+    <!-- Title of tab -->
+    <title>NYC Restaurant Mapper</title>    
+  
+    
+    
+    
+    <script>
+      
+      function onlyUnique(value, index, self) { 
+        return self.indexOf(value) === index;
+      }
+      
+      window.onload = function(){
+      
+        var restaurantNames = []
+        
+        var names = [];
+        var latitudes = [];
+        var longitudes = [];
+        var imageURLs = [];
+        var yelpURLs = [];
+
+        //select the form
+        document.getElementById("restaurants").addEventListener("submit", function(event){
+          //prevent the form from being submitted
+          event.preventDefault();
+          
+          console.clear();
+                    
+          restaurantNames[0] = document.getElementById("restaurant1").value;
+          restaurantNames[1] = document.getElementById("restaurant2").value;
+          restaurantNames[2] = document.getElementById("restaurant3").value;
+          restaurantNames[3] = document.getElementById("restaurant4").value;
+          restaurantNames[4] = document.getElementById("restaurant5").value;
+          
+                    
+          //look at the data that the user submitted
+          console.log(restaurantNames);
+          
+          
+          
+          var myurlBase = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?location=NYC&categories=restaurants&limit=5&sort_by=best_match&term=";
+          
+          i = 0;
+          
+          function myLoop (callback) {           
+             setTimeout(function () {    
+
+               
+               if (restaurantNames[i]) { 
+
+
+                $.ajax({
+                    url: myurlBase + restaurantNames[i],
+                    headers: {
+                       'Authorization':'Bearer KcsZ9J2Oo3vVsMLY2fl3VOMTOmHSn1z20MnulMd9A3SBlNYDgMzlFSH1EO1ETelpehWS1O4RwlV-Exm4utSoeZ-7a6yN3bcfOJGpGuwpQaFctqt4wPLNuCZNdHD2XXYx',
+                   },
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function(response){
+                        console.log("Field " + (i) + " was searched on Yelp: ");
+                        console.log(response.businesses);
+                      
+
+                        for (var j = 0 ; j < response.businesses.length ; j++) {
+                          names.push(response.businesses[j].name);
+                          latitudes.push(response.businesses[j].coordinates.latitude);
+                          longitudes.push(response.businesses[j].coordinates.longitude);
+                          imageURLs.push(response.businesses[j].image_url);
+                          yelpURLs.push(response.businesses[j].url);
+                        }
+                    }
+                });    
+
+              }
+
+
+                i++;                     
+                if (i < restaurantNames.length) {            
+                   myLoop(initMap);             // Recall loop
+                }                       
+
+                else if (i == restaurantNames.length) {
+                  console.log(names);
+                  console.log(latitudes);
+                  console.log(longitudes);
+                  console.log(imageURLs);
+                  console.log(yelpURLs);
+                  
+//                   // Remove duplicate entries from arrays
+//                   var names2 = names.filter( onlyUnique );
+//                   var lat2 = names.filter( onlyUnique );
+//                   var long2 = names.filter( onlyUnique );
+//                   var image2 = names.filter( onlyUnique );
+//                   var yelp2 = names.filter( onlyUnique );
+                  
+//                   console.log(names2);
+//                   console.log(lat2);
+//                   console.log(long2);
+//                   console.log(image2);
+//                   console.log(yelp2);
+                
+                  callback();
+                }
+
+             }, 1000)  // Pause to wait for API response
+
+          }      
+          
+          myLoop(initMap);    
+          
+          
+          
+          
+          
+          // Add infoWindows to markers
+          function addInfoWindow(marker, message) {
+
+            var infoWindow = new google.maps.InfoWindow({
+                content: message
+            });
+
+            google.maps.event.addListener(marker, 'click', function () {
+                infoWindow.open(map, marker);
+            });
+        }
+          
+          
+          //set up the google map
+          var map;
+
+          //initialize map
+          function initMap() {
+            //set some default options
+            var mapOptions = {
+              zoom: 12, //very far
+              center: new google.maps.LatLng(40.70544486444615,-73.99429321289062), //NYC
+              // mapTypeId: 'satellite'
+            };
+
+
+            //create a new map, and have it populate the #map html element
+            var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+            
+            
+            // Insert markers from array
+            var markers = [];
+            
+            for (var k = 0 ; k < latitudes.length ; k++) {
+              markers.push({
+                position: new google.maps.LatLng(latitudes[k],longitudes[k]),
+                map: map,
+                link: yelpURLs[k],
+                title: names[k],                                
+              })
+            }
+            
+            
+            for (var i = 0; i < markers.length; i++) {
+             var marker = new google.maps.Marker(markers[i])
+             
+             var message = 
+                '<h1>' + names[i] + '</h1>' +
+                '<div><a href= "' + yelpURLs[i] + '"><img width = "250px" height = "250px" src = "' + imageURLs[i] + '"></a></div>' +
+                '<p>Click the image to be redirected to this<br>restaurant\'s Yelp page.</p>';
+
+             addInfoWindow(marker, message);
+            }
+            
+            console.log(markers);
+
+          }
+                    
+        });
+      };
+    </script>
+    
+    
+  </head>  
+  
+  
+  
+  <body>
+    <div class="header">
+      <div class = "header-img">
+        <img id = "img1" class="responsive" src = "https://cdn.glitch.com/0d7213c9-699a-4480-a02e-3a1edbc9e452%2Fyelp-logo-transparent-background-4.png?v=1576398888937">
+        
+        <img id = "img2" class="responsive" src = "https://cdn.glitch.com/0d7213c9-699a-4480-a02e-3a1edbc9e452%2Fgoogle-maps-png-google-maps-icon-1600.png?v=1576471348540">
+      </div>
+      
+      <div class="header-title">
+        <h1>
+          New York City Restaurant Mapper
+        </h1>
+      </div>
+    </div>
+    
+    <div class = "background-img">
+      <img id = "img3" class = "responsive" src = "https://cdn.glitch.com/0d7213c9-699a-4480-a02e-3a1edbc9e452%2Frama-%C5%BCywno%C5%9B%C4%87-organiczna-%C5%9Bwiezi-surowi-warzywa-z-czarnymi-fasolami-79572055.jpg?v=1576398890864">
+    </div>
+    
+    <div class = "description">
+      <h2>
+        What Is This?
+      </h2>      
+      <p>
+        This app allows you to quickly search for all of your favorite restaurants or food preferences within New York City. All of the best matches for your search will be neatly organized onto a Google Map and displayed for you, with a link to their Yelp profile.
+      </p>
+      <p>
+        To use the app, simply choose up to 5 different restaurant names or food preferences that you have, fill out the form and click submit. The app will then search Yelp for all of the restaurants you entered, and have all the results plotted together onto a Google map.
+      </p>
+    </div>
+    
+    <div class = "form-section">
+      <h2>
+        Choose Your Searches
+      </h2>
+
+      <div class="form">
+        <form id="restaurants">
+          <label for="restaurant1"></label>
+          <input id="restaurant1" type="text" maxlength="100" placeholder="Restaurant 1" name="restaurant1" value="">
+          <br />
+          
+          <label for="restaurant2"></label>
+          <input id="restaurant2" type="text" maxlength="100" placeholder="Restaurant 2" name="restaurant2" value="">          
+          <br />
+          
+          <label for="restaurant3"></label>
+          <input id="restaurant3" type="text" maxlength="100" placeholder="Restaurant 3" name="restaurant3" value="">
+          <br />
+          
+          <label for="restaurant4"></label>
+          <input id="restaurant4" type="text" maxlength="100" placeholder="Restaurant 4" name="restaurant4" value="">
+          <br />
+          
+          <label for="restaurant5"></label>
+          <input id="restaurant5" type="text" maxlength="100" placeholder="Restaurant 5" name="restaurant5" value="">
+          <br />
+          
+          <input type="submit" name="submit" value="Submit" />
+        </form>
+      </div>
+    </div>
+    
+      
+    <div id="map" class="map">
+        
+    </div>
+          
+    
+
+    
+  </body>
+  
+</html>

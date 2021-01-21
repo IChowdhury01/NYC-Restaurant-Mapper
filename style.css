@@ -1,0 +1,130 @@
+body {
+  font-family: helvetica, arial, sans-serif;
+  margin: 2em;
+  background-image: url("https://cdn.glitch.com/0d7213c9-699a-4480-a02e-3a1edbc9e452%2FjGlzr.png?v=1576398975143");
+}
+
+
+p {
+  font-family: Apple Chancery, cursive
+}
+
+.header-title h1 {
+  font-size: 3em;
+  font-family: Verdana, sans-serif;
+}
+.header-img {
+  width: 100%;
+  text-align: center;
+}
+
+#img2 {
+  width: 10%;
+  opacity: 0.8;
+  filter: alpha(opacity=50);
+}
+
+#img1 {
+  width: 15%;
+  opacity: 0.8;
+  filter: alpha(opacity=50);
+}
+
+
+#map-canvas {
+  height: 600px;
+  margin: 0px;
+  padding: 0px
+}
+
+.header {
+  width: 100%;
+  text-align: center;
+}
+
+#img3 {
+  width: 100%;
+  height: 25em;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+}
+}
+
+.form-section {
+  width: 100%;
+  text-align: center;
+}
+
+.results {
+  width: 100%;
+}
+
+.description {
+  width: 100%;
+}
+
+.description h2 {
+  text-align: center;
+  margin-top: 70px;
+}
+
+.form-section h2 {
+  text-align: center;
+  margin-top: 70px;
+}
+.form {
+  text-align: center;
+}
+
+#map {
+  width: 100%;
+  height: 500px;
+  background-color: grey;
+  margin-top: 35px;
+}
+
+h2 {
+  font-size: 2em;
+}
+ 
+
+
+@media only screen and (max-width: 600px) {
+  .header-title h1 {
+    font-size: 1em;
+  }
+  
+  #img1 {
+    width: 60%;
+  }
+  
+  #img2 {
+    width: 35%;
+  }
+  
+  #img3 {
+    width: 100%;
+    height: 6em;
+  }
+  
+  h2 {
+    font-size: 16px;
+  }
+  
+  p {
+    font-size: 10px;
+  }
+  
+  .description h2 {
+    margin-top: 20px;
+  }
+  
+  .form-section h2 {
+    margin-top: 20px;
+  }
+  
+  #map {
+    height: 150px;
+  }
+  
+}
