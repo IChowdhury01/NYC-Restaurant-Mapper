@@ -1,5 +1,5 @@
 # NYC Restaurant Mapper
-[!](https://img.shields.io/badge/build-passing-brightgreen)
+![build-passing](https://img.shields.io/badge/build-passing-brightgreen)
 
 ## Project Description
 
