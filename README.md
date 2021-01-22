@@ -4,6 +4,12 @@
 
 A web app that searches Yelp for multiple different food preferences or restaurants simultaneously, then maps the top results on a Google Map of NYC. Each marker has attached an image of the restaurant, along with a link to its Yelp profile for further information. Up to 5 simultaneous searches are supported. 
 
+
+## Demo
+
+[![Watch the video](https://img.youtube.com/vi/Lwt06zuVXnc/maxresdefault.jpg)](https://www.youtube.com/watch?v=Lwt06zuVXnc)
+
+
 ## Instructions
 
 1. Install a code editor of your choice, along with a Live Server plugin. Ex: [VSCode](https://code.visualstudio.com/Download) [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer).
