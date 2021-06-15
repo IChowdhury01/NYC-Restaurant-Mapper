@@ -1,4 +1,4 @@
-# RestMap: NYC Restaurant Plotter
+# RestMapNYC: Restaurant Plotter
 ![build-passing](https://img.shields.io/badge/build-passing-brightgreen)
 ![dependencies](https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen)
 
